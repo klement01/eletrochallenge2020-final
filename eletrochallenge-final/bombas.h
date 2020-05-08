@@ -46,3 +46,6 @@ void emergenciaDoBombeamento(sistemaDeBombeamento* bombas);
 
 /* Desativa o estado de emergência das bombas. */
 void normalizacaoDoBombeamento(sistemaDeBombeamento* bombas);
+
+/* Remove o sistema de bombeamento da memória. */
+void removerBombeamento(sistemaDeBombeamento* bombas);

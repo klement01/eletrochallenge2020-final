@@ -22,6 +22,7 @@ int main(void)
 {
     sistemaDeBombeamento* b = Bombas(NUM_BOMBAS);
     estadoDoBombeamento(b);
+    removerBombeamento(b);
     return 0;
 }
 #endif // _CONTROLE_PRINCIPAL
@@ -69,10 +70,10 @@ void estadoDoBombeamento(sistemaDeBombeamento* bombas)
 {
     printf("Bombas totais: %d\n", bombas->totais);
     printf("Bombas ativas: %d\n", bombas->ativas);
-    printf(" Séries de bombas:\n");
+    printf("  Estados das séries de bombas:\n");
     for (int i = 0; i < bombas->totais; i++)
     {
-        printf("  Série %d: ", i+1);
+        printf("  | Série %02d: ", i+1);
         mostrarEstado(bombas->estados[i]);
     }
     printf("Luz amarela: ");
@@ -111,4 +112,14 @@ void emergenciaDoBombeamento(sistemaDeBombeamento* bombas)
 void normalizacaoDoBombeamento(sistemaDeBombeamento* bombas)
 {
     bombas->luzVermelha = false;
+}
+
+/* Remove o sistema de bombeamento da memória. */
+void removerBombeamento(sistemaDeBombeamento* bombas)
+{
+    if (bombas->estados != NULL)
+    {
+        free(bombas->estados);
+    }
+    free(bombas);
 }
