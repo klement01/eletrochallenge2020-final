@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1588972518 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.c
+	<stdlib.h>
+	<stdio.h>
+	"bombas.h"
+
+1588972627 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.h
+	<stdbool.h>
+
