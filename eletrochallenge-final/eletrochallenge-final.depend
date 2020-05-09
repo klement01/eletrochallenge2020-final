@@ -1,18 +1,33 @@
 # depslib dependency file v1.0
-1589039546 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.c
+1589058007 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.c
 	<stdbool.h>
 	<stdlib.h>
 	<stdio.h>
 	"bombas.h"
 
-1589039546 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.h
+1589057777 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.h
 	<stdbool.h>
 
-1589038103 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/guindastes.c
+1589049064 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/guindastes.c
+	<stdbool.h>
+	<stdlib.h>
 	<stdio.h>
 	"guindastes.h"
 
-1589038065 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/guindastes.h
-	<stdlib.h>
+1589062245 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/guindastes.h
 	<stdbool.h>
+
+1589065636 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/energia.c
+	<stdbool.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<ctype.h>
+	<limits.h>
+	"energia.h"
+
+1589061235 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/energia.h
+	<stdbool.h>
+	"bombas.h"
+	"guindastes.h"
 

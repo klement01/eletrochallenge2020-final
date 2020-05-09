@@ -3,8 +3,9 @@
  *  o navio o mais rápido possível, respeitando os limites impostos
  *  pelo controlador de energia.
  *  Em seu estado padrão, todas os guindastes estão operando.
- *  Quando fora do horário de funcionamento (6h - 14h / 18h - 24 h),
- *  ou quando não há um navio atracado, os guindastes são parados.
+ *  Quando fora do horário de funcionamento (06:00 - 14:00 e 18:00 -
+ *  00:00), ou quando não há um navio atracado, os guindastes são
+ *  parados.
  */
 
 #include <stdbool.h>
@@ -13,20 +14,8 @@
 
 #include "guindastes.h"
 
-/*
-int main(void)
-{
-    Guindastes *g = CriarGuindastes(10);
-    atualizarNavio(g, 0);
-    atualizarGuindastes(g, 0);
-    estadoDosGuindastes(g);
-    removerGuindastes(g);
-    return 0;
-}
-*/
-
 /* Cria e inicializa um grupo de guindastes. No início, todos os
-guindastes estão inativos e prontos para carregar um barril. */
+guindastes estão inativos, mas prontos para carregar um barril. */
 Guindastes *CriarGuindastes(int num_guindastes)
 {
     // Se o número de guindastes for inválido (menor que 1) retorna
@@ -52,7 +41,7 @@ Guindastes *CriarGuindastes(int num_guindastes)
     }
     for (int i = 0; i < num_guindastes; i++)
     {
-        guindastes->progressos[i] = 0;
+        guindastes->progressos[i] = -TEMPO_DE_COLETA;
         guindastes->estados[i] = false;
     }
     // Inicializa o restante das variáveis.
@@ -66,7 +55,7 @@ Guindastes *CriarGuindastes(int num_guindastes)
 
 /* Mostra ATIVO se o estado for verdadeiro, INATIVO se for
 falso. Utilizado por estadoDosGuindastes. Função local. */
-void mostrarEstadoDoGuindaste(bool estado)
+static void mostrarEstadoDoGuindaste(bool estado)
 {
     if (estado)
     {
@@ -97,7 +86,7 @@ void estadoDosGuindastes(Guindastes *guindastes)
 }
 
 /* Desativa todos os guindastes. Função local. */
-void desativarTodosOsGuindastes(Guindastes *guindastes)
+static void desativarTodosOsGuindastes(Guindastes *guindastes)
 {
     guindastes->ativos = 0;
     for (int i = 0; i < guindastes->totais; i ++)
@@ -106,16 +95,45 @@ void desativarTodosOsGuindastes(Guindastes *guindastes)
     }
 }
 
-/* Ativa todos os guindastes. Função local. */
-void ativarTodosOsGuindastes(Guindastes *guindastes)
+/* Altera o número máximo de guindastes ativos de um grupo de
+guindastes, atualizando ao mesmo tempo o estado de cada guindaste.
+Tem preferência por desativar guindastes com menor progresso, e
+reativar guindastes com maior progresso, economizando energia a longo
+prazo. Função local. */
+static void alterarGuindastesAtivos(Guindastes *guindastes)
 {
-    guindastes->ativos = guindastes->totais;
-    for (int i = 0; i < guindastes->totais; i ++)
+    // Primeiro, desativa todos os guindastes.
+    desativarTodosOsGuindastes(guindastes);
+    // Então, reativa guindaste até o número de guindastes ativos
+    // ser igual ao número de guindastes ativos máximo.
+    while (guindastes->ativos != guindastes->ativosMax)
     {
-        guindastes->estados[i] = true;
+        guindastes->ativos++;
+        int maiorIndice, maiorProgresso;
+        // Acha um guindaste inativo e guarda seu índice e progresso.
+        for (int i = 0; i < guindastes->totais; i++)
+        {
+            if (!guindastes->estados[i])
+            {
+                maiorIndice = i;
+                maiorProgresso = guindastes->progressos[i];
+                break;
+            }
+        }
+        // Então, tenta achar o guindaste inativo com maior progresso.
+        for (int i = maiorIndice + 1; i < guindastes->totais; i++)
+        {
+            if (!guindastes->estados[i]
+                && guindastes->progressos[i] > maiorProgresso)
+            {
+                maiorIndice = i;
+                maiorProgresso = guindastes->progressos[i];
+            }
+        }
+        // Finalmente, ativa o guindaste com maior progresso encontrado.
+        guindastes->estados[maiorIndice] = true;
     }
 }
-
 
 /* Avança o estado de todos os componentes do grupo de guindastes
 em um minuto. A alteração dos estados depende do horário, já que os
@@ -137,7 +155,7 @@ bool atualizarGuindastes(Guindastes *guindastes, int horario)
     // guindastes e houver um navio atracado, atualiza o número de
     // guindastes ativos, para que seja igual ao número máximo de
     // guindastes ativos.
-    alterarGuindastesAtivos(guindastes, guindastes->ativosMax);
+    alterarGuindastesAtivos(guindastes);
     // Atualiza a posição de cada guindaste.
     for (int i = 0; i < guindastes->totais; i++)
     {
@@ -180,47 +198,6 @@ bool atualizarGuindastes(Guindastes *guindastes, int horario)
         guindastes->progressos[i]++;
     }
     return true;
-}
-
-/* Altera o número máximo de guindastes ativos de um grupo de
-guindastes, atualizando ao mesmo tempo o estado de cada guindaste.
-Tem preferência por desativar guindastes com menor progresso, e
-reativar guindastes com maior progresso, economizando energia a longo
-prazo. */
-void alterarGuindastesAtivos(Guindastes *guindastes, int ativosMax)
-{
-    guindastes->ativosMax = ativosMax;
-    // Primeiro, desativa todos os guindastes.
-    desativarTodosOsGuindastes(guindastes);
-    // Então, reativa guindaste até o número de guindastes ativos
-    // ser igual ao número de guindastes ativos máximo.
-    while (guindastes->ativos != ativosMax)
-    {
-        guindastes->ativos++;
-        int maiorIndice, maiorProgresso;
-        // Acha um guindaste inativo e guarda seu índice e progresso.
-        for (int i = 0; i < guindastes->totais; i++)
-        {
-            if (!guindastes->estados[i])
-            {
-                maiorIndice = i;
-                maiorProgresso = guindastes->progressos[i];
-                break;
-            }
-        }
-        // Então, tenta achar o guindaste inativo com maior progresso.
-        for (int i = maiorIndice + 1; i < guindastes->totais; i++)
-        {
-            if (!guindastes->estados[i]
-                && guindastes->progressos[i] > maiorProgresso)
-            {
-                maiorIndice = i;
-                maiorProgresso = guindastes->progressos[i];
-            }
-        }
-        // Finalmente, ativa o guindaste com maior progresso encontrado.
-        guindastes->estados[maiorIndice] = true;
-    }
 }
 
 /* Atualiza o valor da capacidade do navio de um grupo de guindastes

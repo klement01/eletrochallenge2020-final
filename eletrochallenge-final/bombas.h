@@ -3,6 +3,12 @@
 
 #include <stdbool.h>
 
+/* Número de séries de bombas, definido pelo desafio. */
+#define NUM_BOMBAS 25
+/* Potência das séries de bombas, definida pelo desafio, em kW por
+série de bombas ativa. */
+#define P_BOMBA 40
+
 /** Representação programática de um sistema de bombeamento. Em um
 sistema real, os valores das variáveis estados (das bombas), luzAmarela
 e luzVermelha seriam usados para controlar os respectivos dispositivos
@@ -42,10 +48,6 @@ void emergenciaDoBombeamento(Bombas *bombas);
 
 /* Desativa o estado de emergência das bombas. */
 void normalizacaoDoBombeamento(Bombas *bombas);
-
-/* Retorna o número de bombas ativas, para o cálculo da energia
-consumida. */
-int bombasAtivas(Bombas *bombas);
 
 /* Remove o sistema de bombeamento da memória. */
 void removerBombeamento(Bombas *bombas);

@@ -15,16 +15,6 @@
 
 #include "bombas.h"
 
-/*
-int main(void)
-{
-    Bombas *b = CriarBombas(10);
-    estadoDoBombeamento(b);
-    removerBombeamento(b);
-    return 0;
-}
-*/
-
 /* Cria e inicializa um sistema de bombeamento. No início, todas as
 bombas estão ativas. */
 Bombas *CriarBombas(int num_bombas)
@@ -63,7 +53,7 @@ Bombas *CriarBombas(int num_bombas)
 
 /* Mostra ATIVA se o estado for verdadeiro, INATIVA se for
 falso. Utilizado por estadoDoBombeamento. Função local. */
-void mostrarEstadoDaBomba(bool estado)
+static void mostrarEstadoDaBomba(bool estado)
 {
     if (estado)
     {
@@ -124,13 +114,6 @@ void emergenciaDoBombeamento(Bombas *bombas)
 void normalizacaoDoBombeamento(Bombas *bombas)
 {
     bombas->luzVermelha = false;
-}
-
-/* Retorna o número de bombas ativas, para o cálculo da energia
-consumida. */
-int bombasAtivas(Bombas *bombas)
-{
-    return bombas->ativas;
 }
 
 /* Remove o sistema de bombeamento da memória. */

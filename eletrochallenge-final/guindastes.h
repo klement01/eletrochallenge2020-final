@@ -3,12 +3,20 @@
 
 #include <stdbool.h>
 
-// Tempo necessário para um guindaste coletar um novo barril após
-// ter carregado outro barril, em minutos. Definido pela equipe.
-#define TEMPO_DE_COLETA 2
-// Tempo necessário para um guindaste carregar um barril no navio após
-// ele ser coletado, em minutos. Definido pela equipe.
-#define TEMPO_DE_CARREGAMENTO 3
+/* Número de guindastes, definido pelo desafio. */
+#define NUM_GUINDASTES 10
+/* Potência de cada guindaste, definida pela equipe, em kW por
+guindaste ativo. */
+#define P_GUINDASTE 50 // TODO: Calcular potências dos guindastes.
+
+/* Tempo necessário para um guindaste coletar um novo barril após
+ter carregado outro barril, em minutos. Definido pela equipe */
+#define TEMPO_DE_COLETA 2 // TODO: Calcular tempo de coleta.
+/* Tempo necessário para um guindaste carregar um barril no navio após
+ele ser coletado, em minutos. Definido pela equipe. */
+#define TEMPO_DE_CARREGAMENTO 3 // TODO: Calcular tempo de carregamento.
+/* Capacidade do navio, determinado pela equipe. */
+#define CAPACIDADE_DO_NAVIO 1000 // TODO: Calcular capacidade do navio.
 
 /** Representação programática de um grupo de guindastes. Em um
 sistema real, os valores da variável estados (dos guindastes) seriam
@@ -59,13 +67,6 @@ Retorna true se o navio atracado ainda tiver capacidade após o
 carregamento, false se não houver um navio atracado ou se o navio
 atracado estiver cheio. */
 bool atualizarGuindastes(Guindastes *guindastes, int horario);
-
-/* Altera o número máximo de guindastes ativos de um grupo de
-guindastes, atualizando ao mesmo tempo o estado de cada guindaste.
-Tem preferência por desativar guindastes com menor progresso, e
-reativar guindastes com maior progresso, economizando energia a longo
-prazo. */
-void alterarGuindastesAtivos(Guindastes *guindastes, int ativosMax);
 
 /* Tenta atualizar o valor da capacidade do navio de um grupo de
 guindastes quando um novo navio cehga. A capacidade é um valor
