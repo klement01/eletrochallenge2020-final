@@ -1,7 +1,6 @@
 #ifndef _GUINDASTES
 #define _GUINDASTES
 
-#include <stdlib.h>
 #include <stdbool.h>
 
 // Tempo necessário para um guindaste coletar um novo barril após

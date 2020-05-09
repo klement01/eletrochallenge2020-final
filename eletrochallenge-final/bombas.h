@@ -1,7 +1,6 @@
 #ifndef _BOMBAS
 #define _BOMBAS
 
-#include <stdlib.h>
 #include <stdbool.h>
 
 /** Representação programática de um sistema de bombeamento. Em um

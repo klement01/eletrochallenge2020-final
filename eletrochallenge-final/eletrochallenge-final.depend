@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1589031225 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.c
+1589039546 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.c
+	<stdbool.h>
+	<stdlib.h>
 	<stdio.h>
 	"bombas.h"
 
-1589032143 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.h
-	<stdlib.h>
+1589039546 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.h
 	<stdbool.h>
 
 1589038103 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/guindastes.c

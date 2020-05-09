@@ -9,6 +9,8 @@
  *  ativas pode mudar, e a luz amarela é alterada de acordo.
  */
 
+#include <stdbool.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "bombas.h"

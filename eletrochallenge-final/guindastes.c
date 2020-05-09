@@ -7,6 +7,8 @@
  *  ou quando não há um navio atracado, os guindastes são parados.
  */
 
+#include <stdbool.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "guindastes.h"
