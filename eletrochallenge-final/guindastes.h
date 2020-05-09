@@ -1,6 +1,5 @@
 #ifndef _GUINDASTES
 #define _GUINDASTES
-#endif
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -21,6 +20,9 @@ typedef struct {
     int totais;
     // Número de guindastes ativos.
     int ativos;
+    // Número máximo de guindastes ativos, definido pelo suprimento de
+    // energia.
+    int ativosMax;
     // Número de guindastes que estão, no momento, carregando um
     // barril no navio.
     int carregando;
@@ -36,9 +38,8 @@ typedef struct {
     // no navio.
     int *progressos;
     // Lista que representa o estado de cada guindaste, onde
-    // -1 = inativo, aguardando oportunidade, 0 = inativo,
-    // 1 = ativo.
-    int *estados;
+    // true = ativo, false = inativo.
+    bool *estados;
 } Guindastes;
 
 /** Protótipos das funções públicas, utilizadas pelo controlador
@@ -54,21 +55,27 @@ void estadoDosGuindastes(Guindastes *guindastes);
 
 /* Avança o estado de todos os componentes do grupo de guindastes
 em um minuto. A alteração dos estados depende do horário, já que os
-guindastes não funcionam 24 h por dia. O horário é dado em horas. */
-void atualizarGuindastes(Guindastes *guindastes, int horario);
+guindastes não funcionam 24 h por dia. O horário é dado em horas.
+Retorna true se o navio atracado ainda tiver capacidade após o
+carregamento, false se não houver um navio atracado ou se o navio
+atracado estiver cheio. */
+bool atualizarGuindastes(Guindastes *guindastes, int horario);
 
-/* Altera o número de guindastes ativos de um grupo de guindastes,
-atualizando ao mesmo tempo o estado de cada guindaste. Tem preferência
-por desativar guindastes com menor progresso, e reativas guindastes
-com maior progresso, economizando energia a longo prazo. */
-void alterarGuindastesAtivos(Guindastes *guindastes, int ativos);
+/* Altera o número máximo de guindastes ativos de um grupo de
+guindastes, atualizando ao mesmo tempo o estado de cada guindaste.
+Tem preferência por desativar guindastes com menor progresso, e
+reativar guindastes com maior progresso, economizando energia a longo
+prazo. */
+void alterarGuindastesAtivos(Guindastes *guindastes, int ativosMax);
 
 /* Tenta atualizar o valor da capacidade do navio de um grupo de
 guindastes quando um novo navio cehga. A capacidade é um valor
-inteiro, e representa a quantidade de barris que o novo navio ainda pode
-comportar. Retorna true se o novo navio pôde ser atracado, falso se
-não, ou seja, quando outro navio ainda estava no porto. */
+inteiro, e representa a quantidade de barris que o novo navio ainda
+pode comportar. Retorna true se o novo navio pôde ser atracado, falso
+se não, ou seja, quando outro navio ainda estava no porto. */
 bool atualizarNavio(Guindastes *guindastes, int capacidade);
 
 /* Remove o grupo de guindastes da memória. */
 void removerGuindastes(Guindastes *guindastes);
+
+#endif // _GUINDASTES

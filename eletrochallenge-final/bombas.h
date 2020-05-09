@@ -1,6 +1,5 @@
 #ifndef _BOMBAS
 #define _BOMBAS
-#endif
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -51,3 +50,5 @@ int bombasAtivas(Bombas *bombas);
 
 /* Remove o sistema de bombeamento da memória. */
 void removerBombeamento(Bombas *bombas);
+
+#endif // _BOMBAS

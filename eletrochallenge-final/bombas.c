@@ -27,6 +27,12 @@ int main(void)
 bombas estão ativas. */
 Bombas *CriarBombas(int num_bombas)
 {
+    // Se o número de bombas for inválido (menor que 1) retorna
+    // um apontador nulo.
+    if (num_bombas < 1)
+    {
+        return NULL;
+    }
     // Tenta reservar espaço para um sistema de bombeamento. Se isso
     // falhar, retorn um apontador nulo.
     Bombas *bombas = malloc(sizeof(Bombas));
