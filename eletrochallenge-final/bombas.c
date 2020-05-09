@@ -9,42 +9,45 @@
  *  ativas pode mudar, e a luz amarela é alterada de acordo.
  */
 
-#include <stdlib.h>
 #include <stdio.h>
 
 #include "bombas.h"
 
-#ifndef _CONTROLE_PRINCIPAL
-/* Se esse arquivo for compilado diretamente, sem o sistema de
-controle principal, cria um sistema de bombas padrão, mostra seu
-estado e fecha. */
+/*
 int main(void)
 {
-    sistemaDeBombeamento* b = Bombas(NUM_BOMBAS);
+    Bombas *b = CriarBombas(10);
     estadoDoBombeamento(b);
     removerBombeamento(b);
     return 0;
 }
-#endif // _CONTROLE_PRINCIPAL
+*/
 
 /* Cria e inicializa um sistema de bombeamento. No início, todas as
 bombas estão ativas. */
-sistemaDeBombeamento* Bombas(int num_bombas)
+Bombas *CriarBombas(int num_bombas)
 {
-    sistemaDeBombeamento* bombas = malloc(sizeof(sistemaDeBombeamento));
-    bombas->totais = num_bombas;
-    bombas->ativas = bombas->totais;
-    bombas->estados = malloc(bombas->totais * sizeof(bool));
+    // Tenta reservar espaço para um sistema de bombeamento. Se isso
+    // falhar, retorn um apontador nulo.
+    Bombas *bombas = malloc(sizeof(Bombas));
+    if (bombas == NULL)
+    {
+        return NULL;
+    }
     // Tenta criar uma lista para guardar os estados. Se isso falhar,
     // retorna um apontador nulo.
+    bombas->estados = malloc(num_bombas * sizeof(bool));
     if (bombas->estados == NULL)
     {
         return NULL;
     }
-    for (int i = 0; i < bombas->totais; i++)
+    for (int i = 0; i < num_bombas; i++)
     {
         bombas->estados[i] = true;
     }
+    // Inicializa o restante das variáveis.
+    bombas->totais = num_bombas;
+    bombas->ativas = num_bombas;
     bombas->luzAmarela = true;
     bombas->luzVermelha = false;
     return bombas;
@@ -52,21 +55,22 @@ sistemaDeBombeamento* Bombas(int num_bombas)
 
 /* Mostra ATIVA se o estado for verdadeiro, INATIVA se for
 falso. Utilizado por estadoDoBombeamento. Função local. */
-void mostrarEstado(bool estado)
+void mostrarEstadoDaBomba(bool estado)
 {
     if (estado)
     {
-        printf("ATIVA\n");
+        printf("ATIVA");
     }
     else
     {
-        printf("INATIVA\n");
+        printf("INATIVA");
     }
+    printf("\n");
 }
 
 /* Mostra o estado de todos os componentes de um sistema de
 bombeamento no terminal. */
-void estadoDoBombeamento(sistemaDeBombeamento* bombas)
+void estadoDoBombeamento(Bombas *bombas)
 {
     printf("Bombas totais: %d\n", bombas->totais);
     printf("Bombas ativas: %d\n", bombas->ativas);
@@ -74,18 +78,18 @@ void estadoDoBombeamento(sistemaDeBombeamento* bombas)
     for (int i = 0; i < bombas->totais; i++)
     {
         printf("  | Série %02d: ", i+1);
-        mostrarEstado(bombas->estados[i]);
+        mostrarEstadoDaBomba(bombas->estados[i]);
     }
     printf("Luz amarela: ");
-    mostrarEstado(bombas->luzAmarela);
+    mostrarEstadoDaBomba(bombas->luzAmarela);
     printf("Luz vermelha: ");
-    mostrarEstado(bombas->luzVermelha);
+    mostrarEstadoDaBomba(bombas->luzVermelha);
 }
 
 /* Altera o número de bombas ativas de um sistema de bombeamento,
 atualizando ao mesmo tempo o estado de cada série de bombas e da luz
 indicadora. */
-void alterarBombasAtivas(sistemaDeBombeamento* bombas, int ativas)
+void alterarBombasAtivas(Bombas *bombas, int ativas)
 {
     // Bloqueia a ativação das bombas caso o modo de emergência
     // esteja ativado.
@@ -102,24 +106,28 @@ void alterarBombasAtivas(sistemaDeBombeamento* bombas, int ativas)
 }
 
 /* Ativa o estado de emergência das bombas. */
-void emergenciaDoBombeamento(sistemaDeBombeamento* bombas)
+void emergenciaDoBombeamento(Bombas *bombas)
 {
     alterarBombasAtivas(bombas, 0);
     bombas->luzVermelha = true;
 }
 
 /* Desativa o estado de emergência das bombas. */
-void normalizacaoDoBombeamento(sistemaDeBombeamento* bombas)
+void normalizacaoDoBombeamento(Bombas *bombas)
 {
     bombas->luzVermelha = false;
 }
 
-/* Remove o sistema de bombeamento da memória. */
-void removerBombeamento(sistemaDeBombeamento* bombas)
+/* Retorna o número de bombas ativas, para o cálculo da energia
+consumida. */
+int bombasAtivas(Bombas *bombas)
 {
-    if (bombas->estados != NULL)
-    {
-        free(bombas->estados);
-    }
+    return bombas->ativas;
+}
+
+/* Remove o sistema de bombeamento da memória. */
+void removerBombeamento(Bombas *bombas)
+{
+    free(bombas->estados);
     free(bombas);
 }
