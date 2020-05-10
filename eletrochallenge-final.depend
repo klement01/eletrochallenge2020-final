@@ -40,16 +40,16 @@
 1589057777 /home/lucas/Documents/eletrochallenge/bombas.h
 	<stdbool.h>
 
-1589076099 source:/home/lucas/Documents/eletrochallenge/guindastes.c
+1589123823 source:/home/lucas/Documents/eletrochallenge/guindastes.c
 	<stdbool.h>
 	<stdlib.h>
 	<stdio.h>
 	"guindastes.h"
 
-1589062245 /home/lucas/Documents/eletrochallenge/guindastes.h
+1589124406 /home/lucas/Documents/eletrochallenge/guindastes.h
 	<stdbool.h>
 
-1589121148 source:/home/lucas/Documents/eletrochallenge/energia.c
+1589123832 source:/home/lucas/Documents/eletrochallenge/energia.c
 	<stdbool.h>
 	<stdlib.h>
 	<stdio.h>
@@ -58,7 +58,7 @@
 	<limits.h>
 	"energia.h"
 
-1589119097 /home/lucas/Documents/eletrochallenge/energia.h
+1589128628 /home/lucas/Documents/eletrochallenge/energia.h
 	<stdbool.h>
 	"bombas.h"
 	"guindastes.h"

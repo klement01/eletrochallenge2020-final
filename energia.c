@@ -122,9 +122,6 @@ int main(int argc, char **argv)
     // guindastes e um navio com capacidade padrão.
     Bombas *bombas = CriarBombas(NUM_BOMBAS);
     Guindastes *guindastes = CriarGuindastes(NUM_GUINDASTES);
-    // mostrarFracao: true se o usuário quer ver o uso da termelétrica
-    // a cada passo, false se não.
-    bool mostrarFracao = false;
     if (bombas == NULL || guindastes == NULL)
     {
         // Remove as bombas e guindastes da memória.
@@ -133,6 +130,9 @@ int main(int argc, char **argv)
         return 2;
     }
     atualizarNavio(guindastes, CAPACIDADE_DO_NAVIO);
+    // mostrarFracao: true se o usuário quer ver o uso da termelétrica
+    // a cada passo, false se não.
+    bool mostrarFracao = false;
 
     printf("----- MODO INTERATIVO -----\n");
     printf("Digite 'h' para obter ajuda\n");
@@ -290,7 +290,7 @@ na plataforma atingir sua capacidade. */
 double passosNavio(Bombas *bombas, Guindastes *guindastes,
                    int *hora, int *minuto, bool mostrarFracao)
 {
-    if (guindastes->estadoDoNavio <= 0)
+    if (guindastes->estadoDoNavio == 0)
     {
         return 0.0;
     }
@@ -398,7 +398,7 @@ double potenciaDasTurbinas(int horario)
         return 80 * NUM_TURBINAS * E_INVERSORES;
     }
     // 70 kW = potência quando v = 10 m/s.
-    return 70 * NUM_TURBINAS * E_INVERSORES; // TODO: Confirmar esse valor (70).
+    return 70 * NUM_TURBINAS * E_INVERSORES;
 }
 
 /* Solicita um número do usuário dentro de um limite. */

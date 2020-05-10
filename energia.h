@@ -13,10 +13,10 @@ pelo desafio. */
 #define P_AUXILIAR 3620
 /* Potência máxima que pode ser fornecida pela termelétrica, em kW,
 calculada pela equipe baseado nos dados fornecidos pelo desafio. */
-#define P_TERMELETRICA 40100 // TODO: Calcular a potência da termelétrica.
+#define P_TERMELETRICA 231008
 /* Custo em reais por kWh da energia fornecida pela termelétrica,
 calculado pela equipe baseado nos dados fornecidos pelo desafio. */
-#define C_TERMELETRICA 1 // TODO: Calcular o custo / kWh da termelétrica.
+#define C_TERMELETRICA 0.478
 /* Eficiência dos inversores de frequência, definida pelo desafio. */
 #define E_INVERSORES 0.95
 
