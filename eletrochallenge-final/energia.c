@@ -58,7 +58,7 @@ int main(int argc, char **argv)
         // Comando não identificado: instruções básicas.
         else
         {
-            printf("Use --help para obter ajuda.\n", argv[0]);
+            printf("Use 'plataforma --help' para obter ajuda.\n");
             return 1;
         }
     }
@@ -67,7 +67,7 @@ int main(int argc, char **argv)
     {
         if (strcmp(argv[1], "-t"))
         {
-            printf("Use --help para obter ajuda.\n", argv[0]);
+            printf("Use 'plataforma --help' para obter ajuda.\n");
             return 1;
         }
         // Comando -t: permite inserir um horário inicial qualquer
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
         // uso do comando -t.
         if (!strNumerica(argv[2]) || !strNumerica(argv[3]))
         {
-            printf("Uso: %s -t horas minutos\n", argv[0]);
+            printf("Uso: plataforma -t horas minutos\n");
             return 1;
         }
         // Se ambas as entradas são números: os insere como horário
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
     // Outras quantidades de argumentos: instruções básicas.
     else
     {
-        printf("Use %s --help para obter ajuda.\n", argv[0]);
+        printf("Use 'plataforma --help' para obter ajuda.\n");
         return 1;
     }
 
