@@ -13,6 +13,8 @@ int main(int argc, char **argv)
 {
     int hora, minuto;
 
+    // Cria uma plataforma padrão, com 25 séries de bombas e 10
+    // guindastes.
     Bombas *bombas = CriarBombas(NUM_BOMBAS);
     Guindastes *guindastes = CriarGuindastes(NUM_GUINDASTES);
 
@@ -31,7 +33,7 @@ int main(int argc, char **argv)
     {
         // Modo simulação: calcula o gasto de energia diário e mensal
         // (30 dias), em situações ideais.
-        if (!strcmp(argv[1], "sim"))
+        if (!strcmp(argv[1], "custo"))
         {
             hora = 0, minuto = 0;
             // Cria um navio com capacidade extrema, simulando uma
@@ -56,7 +58,7 @@ int main(int argc, char **argv)
         // Comando não identificado: instruções básicas.
         else
         {
-            printf("Use %s --help para obter ajuda.\n", argv[0]);
+            printf("Use --help para obter ajuda.\n", argv[0]);
             return 1;
         }
     }
@@ -65,7 +67,7 @@ int main(int argc, char **argv)
     {
         if (strcmp(argv[1], "-t"))
         {
-            printf("Use %s --help para obter ajuda.\n", argv[0]);
+            printf("Use --help para obter ajuda.\n", argv[0]);
             return 1;
         }
         // Comando -t: permite inserir um horário inicial qualquer
@@ -95,6 +97,12 @@ int main(int argc, char **argv)
     /* --------------------------------------------------------------
     -------------- MODO INTERATIVO ----------------------------------
     -------------------------------------------------------------- */
+
+    // Atraca um navio com capacidade padrão.
+    atualizarNavio(guindastes, CAPACIDADE_DO_NAVIO);
+
+    printf("--- MODO INTERATIVO ---\n");
+    printf("Digite 'h' para obter ajuda.\n\n");
     while (true)
     {
         // Mostra informações resumidas.
@@ -109,12 +117,55 @@ int main(int argc, char **argv)
             printf("-> ");
             // Gambiarra para evitar um bug causado pelo buffering
             // do stdin, não sei direito como funciona :/
-            char comando[11] = {0};
-            fgets(comando, 10, stdin);
-            // Cria uma variável para o custo.
+            char comando;
+            scanf(" %c", &comando);
+            // Cria uma variável para o custo e para um int qualquer.
             double custo;
-            switch (comando[0])
+            int n;
+            switch (comando)
             {
+                // Comando 'P': avança a simulação em algum número de
+                // passos (até um dia).
+                case 'P':
+                    n = getNum(0, 24*60);
+                    custo = passosN(n, bombas, guindastes,
+                                    &hora, &minuto);
+                    printf("Custo: R$ %.3lf\n", custo);
+                    break;
+                // Comando 'p': avança a simulação um passo.
+                case 'p':
+                    custo = passosN(1, bombas, guindastes,
+                                    &hora, &minuto);
+                    printf("Custo: R$ %.3lf\n", custo);
+                    break;
+                // Comando 'E': desativa o modo de emergência das
+                // bombas.
+                case 'E':
+                    normalizacaoDoBombeamento(bombas);
+                    break;
+                // Comando 'e': ativa o modo de emergência das bombas.
+                case 'e':
+                    emergenciaDoBombeamento(bombas);
+                    break;
+                // Comando 'G': altera o número máximo de guindastes
+                // ativos.
+                case 'G':
+                    n = getNum(0, guindastes->totais);
+                    guindastes->ativosMax = n;
+                    break;
+                // Comando 'g': mostra o estado dos guindastes.
+                case 'g':
+                    estadoDosGuindastes(guindastes);
+                    continue;
+                // Comando 'B': altera o número de bombas ativas.
+                case 'B':
+                    n = getNum(0, bombas->totais);
+                    alterarBombasAtivas(bombas, n);
+                    break;
+                // Comando 'b': mostra o estado das bombas.
+                case 'b':
+                    estadoDoBombeamento(bombas);
+                    continue;
                 // Comando 'N': avança a simulação até o navio
                 // atual estar cheio.
                 case 'N':
@@ -134,8 +185,17 @@ int main(int argc, char **argv)
                     else
                     {
                         printf("Já há um navio atracado.\n");
-                        continue;
+                        break;
                     }
+                // Comando 'H/h': mostra ajuda do modo interativo.
+                case 'H':
+                case 'h':
+                    // TODO: Ajuda do modo interativo.
+                    continue;
+                // Comando 'Q/q': sai do programa.
+                case 'Q':
+                case 'q':
+                    return 0;
                 // Se o comando não é reconhecido, pede um novo.
                 default:
                     printf("Comando inválido.\n");
@@ -266,6 +326,20 @@ double potenciaDasTurbinas(int horario)
     }
     // 70 kW = potência quando v = 10 m/s.
     return 70 * NUM_TURBINAS * E_INVERSORES; // TODO: Confirmar esse valor (70).
+}
+
+/* Solicita um número do usuário dentro de um limite. */
+int getNum(int minimo, int maximo)
+{
+    int numero;
+    printf("Entre um número entre %d e %d:\n", minimo, maximo);
+    do
+    {
+        printf("-> ");
+        scanf("%d", &numero);
+    }
+    while (numero < minimo || numero > maximo);
+    return numero;
 }
 
 /* Retorna true se str for uma string numérica, false se não. */

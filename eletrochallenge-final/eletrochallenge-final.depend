@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1589058007 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.c
+1589067790 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/bombas.c
 	<stdbool.h>
 	<stdlib.h>
 	<stdio.h>
@@ -17,7 +17,7 @@
 1589062245 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/guindastes.h
 	<stdbool.h>
 
-1589065636 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/energia.c
+1589068957 source:/home/lucas/Documents/eletrochallenge/eletrochallenge-final/energia.c
 	<stdbool.h>
 	<stdlib.h>
 	<stdio.h>
@@ -26,7 +26,7 @@
 	<limits.h>
 	"energia.h"
 
-1589061235 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/energia.h
+1589066620 /home/lucas/Documents/eletrochallenge/eletrochallenge-final/energia.h
 	<stdbool.h>
 	"bombas.h"
 	"guindastes.h"

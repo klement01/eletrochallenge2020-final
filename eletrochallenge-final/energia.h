@@ -54,6 +54,9 @@ double demandaDaTermeletrica(double demandaTotal, int horario);
 certo horário do dia. */
 double potenciaDasTurbinas(int horario);
 
+/* Solicita um número do usuário dentro de um limite. */
+int getNum(int minimo, int maximo);
+
 /* Retorna true se str for uma string numérica, false se não. */
 bool strNumerica(char *str);
 
