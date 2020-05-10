@@ -22,13 +22,8 @@
 
 int main(int argc, char **argv)
 {
+    // Variáveis que dependem dos argumentos.
     int hora, minuto;
-
-    // Cria uma plataforma padrão, com 25 séries de bombas e 10
-    // guindastes.
-    Bombas *bombas = CriarBombas(NUM_BOMBAS);
-    Guindastes *guindastes = CriarGuindastes(NUM_GUINDASTES);
-
     /* --------------------------------------------------------------
     ----------------- ARGUMENTOS ------------------------------------
     -------------------------------------------------------------- */
@@ -47,17 +42,31 @@ int main(int argc, char **argv)
         if (!strcmp(argv[1], "custo"))
         {
             hora = 0, minuto = 0;
+            // Cria uma plataforma padrão, com 25 séries de bombas e
+            // 10 guindastes.
+            Bombas *bombas = CriarBombas(NUM_BOMBAS);
+            Guindastes *guindastes = CriarGuindastes(NUM_GUINDASTES);
+            if (bombas == NULL || guindastes == NULL)
+            {
+                // Remove as bombas e guindastes da memória.
+                removerBombeamento(bombas);
+                removerGuindastes(guindastes);
+                return 2;
+            }
             // Cria um navio com capacidade extrema, simulando uma
             // situação em que a troca de navios é instantânea.
             atualizarNavio(guindastes, INT_MAX);
             // Dá 24 * 60 passos (1440 minutos = 1 dia), registrando
             // o custo durante o processo.
-            double custoDiario = passosN(24 * 60, bombas, guindastes,
-                                         &hora, &minuto);
+            double custoMensal = passosN(24 * 60 * 30, bombas, guindastes,
+                                         &hora, &minuto, false);
             // Mostra os custos calculados no terminal.
             printf("Condições ideais (operação contínua):\n");
-            printf("Custo diário: R$ %.3lf\n", custoDiario);
-            printf("Custo mensal: R$ %.3lf\n", custoDiario * 30);
+            printf("Custo diário: R$ %.3lf\n", custoMensal / 30);
+            printf("Custo mensal: R$ %.3lf\n", custoMensal);
+            // Remove as bombas e guindastes da memória.
+            removerBombeamento(bombas);
+            removerGuindastes(guindastes);
             return 0;
         }
         // Ajuda: mostra os comandos possíveis no terminal.
@@ -109,19 +118,33 @@ int main(int argc, char **argv)
     -------------- MODO INTERATIVO ----------------------------------
     -------------------------------------------------------------- */
 
-    // Atraca um navio com capacidade padrão.
+    // Cria uma plataforma padrão, com 25 séries de bombas, 10
+    // guindastes e um navio com capacidade padrão.
+    Bombas *bombas = CriarBombas(NUM_BOMBAS);
+    Guindastes *guindastes = CriarGuindastes(NUM_GUINDASTES);
+    // mostrarFracao: true se o usuário quer ver o uso da termelétrica
+    // a cada passo, false se não.
+    bool mostrarFracao = false;
+    if (bombas == NULL || guindastes == NULL)
+    {
+        // Remove as bombas e guindastes da memória.
+        removerBombeamento(bombas);
+        removerGuindastes(guindastes);
+        return 2;
+    }
     atualizarNavio(guindastes, CAPACIDADE_DO_NAVIO);
 
     printf("----- MODO INTERATIVO -----\n");
-    printf("Digite 'h' para obter ajuda.\n");
+    printf("Digite 'h' para obter ajuda\n");
     printf("---------------------------\n\n");
+    double custoTotal = 0;
     while (true)
     {
         // Mostra informações resumidas.
         printf("Horário: %02d:%02d\n", hora, minuto);
-        printf("Bombas ativas: %d\n", bombas->ativas);
-        printf("Guindastes ativos: %d\n", guindastes->ativos);
-        printf("Capacidade do navio: %d\n", guindastes->estadoDoNavio);
+        printf("Bombas ativas: %d de %d\n", bombas->ativas, bombas->totais);
+        printf("Guindastes ativos: %d de %d\n", guindastes->ativos, guindastes->totais);
+        printf("Capacidade do navio: %d barris\n", guindastes->estadoDoNavio);
         // Solicita e executa um comando.
         while (true)
         {
@@ -139,14 +162,16 @@ int main(int argc, char **argv)
                 case 'P':
                     n = getNum(0, 24*60);
                     custo = passosN(n, bombas, guindastes,
-                                    &hora, &minuto);
+                                    &hora, &minuto, mostrarFracao);
                     printf("\nCusto: R$ %.3lf\n", custo);
+                    custoTotal += custo;
                     break;
                 // Comando 'p': avança a simulação um passo.
                 case 'p':
                     custo = passosN(1, bombas, guindastes,
-                                    &hora, &minuto);
+                                    &hora, &minuto, mostrarFracao);
                     printf("\nCusto: R$ %.3lf\n", custo);
+                    custoTotal += custo;
                     break;
                 // Comando 'E': desativa o modo de emergência das
                 // bombas.
@@ -162,7 +187,7 @@ int main(int argc, char **argv)
                 case 'G':
                     n = getNum(0, guindastes->totais);
                     guindastes->ativosMax = n;
-                    break;
+                    continue;
                 // Comando 'g': mostra o estado dos guindastes.
                 case 'g':
                     estadoDosGuindastes(guindastes);
@@ -171,7 +196,7 @@ int main(int argc, char **argv)
                 case 'B':
                     n = getNum(0, bombas->totais);
                     alterarBombasAtivas(bombas, n);
-                    break;
+                    continue;
                 // Comando 'b': mostra o estado das bombas.
                 case 'b':
                     estadoDoBombeamento(bombas);
@@ -180,8 +205,9 @@ int main(int argc, char **argv)
                 // atual estar cheio.
                 case 'N':
                     custo = passosNavio(bombas, guindastes,
-                                        &hora, &minuto);
+                                        &hora, &minuto, mostrarFracao);
                     printf("\nCusto: R$ %.3lf\n", custo);
+                    custoTotal += custo;
                     break;
                 // Comando 'n': significa a chegada de um navio.
                 case 'n':
@@ -189,7 +215,7 @@ int main(int argc, char **argv)
                     if(atualizarNavio(guindastes, CAPACIDADE_DO_NAVIO))
                     {
                         printf("Navio atracado.\n");
-                        printf("Capacidade do navio: %d\n",
+                        printf("Capacidade do navio: %d barris\n",
                                guindastes->estadoDoNavio);
                         continue;
                     }
@@ -199,6 +225,20 @@ int main(int argc, char **argv)
                         printf("Já há um navio atracado.\n");
                         continue;
                     }
+                // Comando 'T/t': decide se a demanda da termelétrica
+                // será mostrada na tela durante o modo interativo.
+                case 'T':
+                case 't':
+                    mostrarFracao = !mostrarFracao;
+                    if (mostrarFracao)
+                    {
+                        printf("Demanda da termelétrica será mostrada.\n");
+                    }
+                    else
+                    {
+                        printf("Demanda da termelétrica não será mostrada.\n");
+                    }
+                    continue;
                 // Comando 'H/h': mostra ajuda do modo interativo.
                 case 'H':
                 case 'h':
@@ -207,6 +247,9 @@ int main(int argc, char **argv)
                 // Comando 'Q/q': sai do programa.
                 case 'Q':
                 case 'q':
+                    // Remove as bombas e guindastes da memória.
+                    removerBombeamento(bombas);
+                    removerGuindastes(guindastes);
                     return 0;
                 // Se o comando não é reconhecido, pede um novo.
                 default:
@@ -215,22 +258,26 @@ int main(int argc, char **argv)
             }
             break;
         }
-        putchar('\n');
+        printf("Custo total: R$ %.3lf\n\n", custoTotal);
     }
 
+    // Remove as bombas e guindastes da memória.
+    removerBombeamento(bombas);
+    removerGuindastes(guindastes);
     return 0;
 }
 
 /* Dá uma quantidade pré-determinada de passos, e retorna o custo
 total dessas etapas. */
 double passosN(int passos, Bombas *bombas, Guindastes *guindastes,
-               int *hora, int *minuto)
+               int *hora, int *minuto, bool mostrarFracao)
 {
     double fracaoDaTermeletrica;
     double custo = 0;
     for (int i = 0; i < passos; i++)
     {
-        passo(bombas, guindastes, hora, minuto, &fracaoDaTermeletrica);
+        passo(bombas, guindastes, hora, minuto, &fracaoDaTermeletrica,
+              mostrarFracao);
         custo += fracaoDaTermeletrica * P_TERMELETRICA *
                  C_TERMELETRICA / 60;
     }
@@ -241,7 +288,7 @@ double passosN(int passos, Bombas *bombas, Guindastes *guindastes,
 -determinada de passos, avança a simulação até o navio atracado
 na plataforma atingir sua capacidade. */
 double passosNavio(Bombas *bombas, Guindastes *guindastes,
-                   int *hora, int *minuto)
+                   int *hora, int *minuto, bool mostrarFracao)
 {
     if (guindastes->estadoDoNavio <= 0)
     {
@@ -250,7 +297,7 @@ double passosNavio(Bombas *bombas, Guindastes *guindastes,
     double fracaoDaTermeletrica;
     double custo = 0;
     while (passo(bombas, guindastes, hora, minuto,
-           &fracaoDaTermeletrica))
+           &fracaoDaTermeletrica, mostrarFracao))
     {
         custo += fracaoDaTermeletrica * P_TERMELETRICA *
                  C_TERMELETRICA / 60;
@@ -262,8 +309,8 @@ double passosNavio(Bombas *bombas, Guindastes *guindastes,
 true se há um navio na plataforma, false se não. A fração da
 capacidade da termelétrica que é demandada pela plataforma é
 colocada no endereço de memória especificado. */
-bool passo(Bombas *bombas, Guindastes *guindastes,
-           int *hora, int *minuto, double *fracaoDaTermeletrica)
+bool passo(Bombas *bombas, Guindastes *guindastes, int *hora,
+           int *minuto, double *fracaoDaTermeletrica, bool mostrarFracao)
 {
     // Acresce o tempo em um minuto.
     (*minuto)++;
@@ -277,6 +324,12 @@ bool passo(Bombas *bombas, Guindastes *guindastes,
     bool estadoDoNavio = atualizarGuindastes(guindastes, *hora);
     // Calcula a distribuição de energia.
     *fracaoDaTermeletrica = ajustarDemanda(bombas, guindastes, *hora);
+    // Mostra a fração da energia usada em um determinado horário.
+    if (mostrarFracao)
+    {
+        printf("\n(%02d:%02d) %.2lf %%", *hora, *minuto,
+               *fracaoDaTermeletrica * 100);
+    }
     // Retorna o estado do navio.
     return estadoDoNavio;
 }
@@ -316,6 +369,9 @@ double ajustarDemanda(Bombas *bombas, Guindastes *guindastes, int horario)
     }
     // Se não, calcula a fração da capacidade da usina que deve ser
     // direcionada à plataforma.
+    /** Em um sistema real, uma interface programa -> dispositivo
+    seria utilizada para ajustar a demanda de energia de acordo com
+    esse valor. */
     return subdemanda / P_TERMELETRICA;
 }
 
@@ -324,6 +380,11 @@ um horário do dia e uma demanda total, em kW. */
 double demandaDaTermeletrica(double demandaTotal, int horario)
 {
     double demanda = demandaTotal - potenciaDasTurbinas(horario);
+    // Se a potência das turbinas é suficiente para suprir a demanda.
+    if (demanda < 0)
+    {
+        return 0;
+    }
     return demanda / E_INVERSORES;
 }
 
@@ -331,7 +392,7 @@ double demandaDaTermeletrica(double demandaTotal, int horario)
 certo horário do dia. */
 double potenciaDasTurbinas(int horario)
 {
-    if (horario > 7 || horario < 22)
+    if (horario > 7 && horario < 22)
     {
         // 80 kW = potência quando v = 6 m/s.
         return 80 * NUM_TURBINAS * E_INVERSORES;
@@ -386,6 +447,10 @@ void ajudaDoPrograma(void)
 }
 void ajudoDoModoInterativo(void)
 {
+    printf("Os comandos que AVANÇAM a simulação mostram o custo do avanço");
+    printf(" atual, o custo total desde o início do programa, e um resumo");
+    printf(" do estado da simulação.\n");
+    printf("COMANDOS:\n");
     printf("b : exibe o estado de todo o sistema de bombeamento.\n");
     printf("B : permite alterar o número de bombas ativas.\n");
     printf("e : ativa o estado de emergência das bombas.\n");
@@ -400,4 +465,6 @@ void ajudoDoModoInterativo(void)
     printf("P : AVANÇA a simulação um número arbitrário de passos.\n");
     printf("q : fecha o programa.\n");
     printf("Q : fecha o programa.\n");
+    printf("t : decide se a demanda da termelétrica em cada horário será mostrada.\n");
+    printf("T : decide se a demanda da termelétrica em cada horário será mostrada.\n");
 }

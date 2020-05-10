@@ -16,27 +16,27 @@ calculada pela equipe baseado nos dados fornecidos pelo desafio. */
 #define P_TERMELETRICA 40100 // TODO: Calcular a potência da termelétrica.
 /* Custo em reais por kWh da energia fornecida pela termelétrica,
 calculado pela equipe baseado nos dados fornecidos pelo desafio. */
-#define C_TERMELETRICA 1
+#define C_TERMELETRICA 1 // TODO: Calcular o custo / kWh da termelétrica.
 /* Eficiência dos inversores de frequência, definida pelo desafio. */
 #define E_INVERSORES 0.95
 
 /* Dá uma quantidade pré-determinada de passos, e retorna o custo
 total dessas etapas. */
 double passosN(int passos, Bombas *bombas, Guindastes *guindastes,
-               int *hora, int *minuto);
+               int *hora, int *minuto, bool mostraFracao);
 
 /* Funciona como passosN, mas em vez de dar uma quantidade pré-
 -determinada de passos, avança a simulação até o navio atracado
 na plataforma atingir sua capacidade. */
 double passosNavio(Bombas *bombas, Guindastes *guindastes,
-                   int *hora, int *minuto);
+                   int *hora, int *minuto, bool mostrarFracao);
 
 /* Simula um passo (um minuto) de operação da plataforma. Retorna
 true se há um navio na plataforma, false se não. A fração da
 capacidade da termelétrica que é demandada pela plataforma é
 colocada no endereço de memória especificado. */
-bool passo(Bombas *bombas, Guindastes *guindastes,
-           int *hora, int *minuto, double *fracaoDaTermeletrica);
+bool passo(Bombas *bombas, Guindastes *guindastes, int *hora,
+           int *minuto, double *fracaoDaTermeletrica, bool mostrarFracao);
 
 /* Calcula a porcentagem da demanda da termelétrica que deve ser
 direcionada para a plataforma de petróleo para a sua operação e, se

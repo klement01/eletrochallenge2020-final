@@ -217,7 +217,10 @@ bool atualizarNavio(Guindastes *guindastes, int capacidade)
 /* Remove o grupo de guindastes da memória. */
 void removerGuindastes(Guindastes *guindastes)
 {
-    free(guindastes->progressos);
-    free(guindastes->estados);
+    if (guindastes != NULL)
+    {
+        free(guindastes->progressos);
+        free(guindastes->estados);
+    }
     free(guindastes);
 }

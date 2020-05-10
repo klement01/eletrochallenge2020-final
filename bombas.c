@@ -119,6 +119,9 @@ void normalizacaoDoBombeamento(Bombas *bombas)
 /* Remove o sistema de bombeamento da memória. */
 void removerBombeamento(Bombas *bombas)
 {
-    free(bombas->estados);
+    if (bombas != NULL)
+    {
+        free(bombas->estados);
+    }
     free(bombas);
 }
