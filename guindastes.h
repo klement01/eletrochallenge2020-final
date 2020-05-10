@@ -10,13 +10,13 @@ guindaste ativo. */
 #define P_GUINDASTE 50 // TODO: Calcular potências dos guindastes.
 
 /* Tempo necessário para um guindaste coletar um novo barril após
-ter carregado outro barril, em minutos. Definido pela equipe */
-#define TEMPO_DE_COLETA 2 // TODO: Calcular tempo de coleta.
+ter carregado outro barril, em segundos. Definido pela equipe */
+#define TEMPO_DE_COLETA 13
 /* Tempo necessário para um guindaste carregar um barril no navio após
-ele ser coletado, em minutos. Definido pela equipe. */
-#define TEMPO_DE_CARREGAMENTO 3 // TODO: Calcular tempo de carregamento.
+ele ser coletado, em segundos. Definido pela equipe. */
+#define TEMPO_DE_CARREGAMENTO 17
 /* Capacidade do navio, determinado pela equipe. */
-#define CAPACIDADE_DO_NAVIO 1000 // TODO: Calcular capacidade do navio.
+#define CAPACIDADE_DO_NAVIO 203349
 
 /** Representação programática de um grupo de guindastes. Em um
 sistema real, os valores da variável estados (dos guindastes) seriam

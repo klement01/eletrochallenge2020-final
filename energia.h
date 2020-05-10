@@ -23,20 +23,21 @@ calculado pela equipe baseado nos dados fornecidos pelo desafio. */
 /* Dá uma quantidade pré-determinada de passos, e retorna o custo
 total dessas etapas. */
 double passosN(int passos, Bombas *bombas, Guindastes *guindastes,
-               int *hora, int *minuto, bool mostraFracao);
+               int *hora, int *minuto, int *segundo, bool mostraFracao);
 
 /* Funciona como passosN, mas em vez de dar uma quantidade pré-
 -determinada de passos, avança a simulação até o navio atracado
 na plataforma atingir sua capacidade. */
-double passosNavio(Bombas *bombas, Guindastes *guindastes,
-                   int *hora, int *minuto, bool mostrarFracao);
+double passosNavio(Bombas *bombas, Guindastes *guindastes, int *hora,
+                   int *minuto, int *segundo, bool mostrarFracao);
 
 /* Simula um passo (um minuto) de operação da plataforma. Retorna
 true se há um navio na plataforma, false se não. A fração da
 capacidade da termelétrica que é demandada pela plataforma é
 colocada no endereço de memória especificado. */
 bool passo(Bombas *bombas, Guindastes *guindastes, int *hora,
-           int *minuto, double *fracaoDaTermeletrica, bool mostrarFracao);
+           int *minuto, int *segundo, double *fracaoDaTermeletrica,
+           bool mostrarFracao);
 
 /* Calcula a porcentagem da demanda da termelétrica que deve ser
 direcionada para a plataforma de petróleo para a sua operação e, se
