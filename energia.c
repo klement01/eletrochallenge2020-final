@@ -189,13 +189,15 @@ int main(int argc, char **argv)
                     if(atualizarNavio(guindastes, CAPACIDADE_DO_NAVIO))
                     {
                         printf("Navio atracado.\n");
-                        break;
+                        printf("Capacidade do navio: %d\n",
+                               guindastes->estadoDoNavio);
+                        continue;
                     }
                     // Se há, pede um comando novo.
                     else
                     {
                         printf("Já há um navio atracado.\n");
-                        break;
+                        continue;
                     }
                 // Comando 'H/h': mostra ajuda do modo interativo.
                 case 'H':

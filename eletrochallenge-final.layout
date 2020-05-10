@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
-	<ActiveTarget name="Debug" />
-	<File name="bombas.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3266" topLine="103" />
-		</Cursor>
-	</File>
+	<ActiveTarget name="Release" />
 	<File name="energia.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2346" topLine="39" />
+			<Cursor1 position="2539" topLine="47" />
+		</Cursor>
+	</File>
+	<File name="guindastes.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3836" topLine="102" />
 		</Cursor>
 	</File>
 	<File name="bombas.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -17,19 +17,19 @@
 			<Cursor1 position="1662" topLine="34" />
 		</Cursor>
 	</File>
-	<File name="guindastes.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="458" topLine="96" />
-		</Cursor>
-	</File>
 	<File name="guindastes.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="811" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="bombas.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
 	<File name="energia.c" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3748" topLine="93" />
+			<Cursor1 position="14390" topLine="382" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
