@@ -1,4 +1,15 @@
-// TODO: Descrição do módulo de energia.
+/** Emite comandos para os módulos de controle das bombas e dos
+ *  guindastes. Faz isso baseado em cálculos de consumo de energia.
+ *  Conta com um modo interativo, que permite simular situações reais
+ *  de ativação e desativação de componentes, carregamento de navios
+ *  e o modo de emergência das bombas.
+ *  O modo interativo pode ser acesso abrindo o programa sem nenhum
+ *  argumento ou com o argumento opcional -t, que permite escolher um
+ *  horário inicial diferente do padrão (12:00).
+ *  Além disso, pode ser aberto no modo custo, que calcula o custo
+ *  diário e mensal de operação da plataforma, de acordo com as
+ *  especificaçes do desafio.
+ */
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -52,7 +63,7 @@ int main(int argc, char **argv)
         // Ajuda: mostra os comandos possíveis no terminal.
         else if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help"))
         {
-            // TODO: Ajuda.
+            ajudaDoPrograma();
             return 0;
         }
         // Comando não identificado: instruções básicas.
@@ -101,8 +112,9 @@ int main(int argc, char **argv)
     // Atraca um navio com capacidade padrão.
     atualizarNavio(guindastes, CAPACIDADE_DO_NAVIO);
 
-    printf("--- MODO INTERATIVO ---\n");
-    printf("Digite 'h' para obter ajuda.\n\n");
+    printf("----- MODO INTERATIVO -----\n");
+    printf("Digite 'h' para obter ajuda.\n");
+    printf("---------------------------\n\n");
     while (true)
     {
         // Mostra informações resumidas.
@@ -115,8 +127,6 @@ int main(int argc, char **argv)
         {
             // Solicita um char do usuário.
             printf("-> ");
-            // Gambiarra para evitar um bug causado pelo buffering
-            // do stdin, não sei direito como funciona :/
             char comando;
             scanf(" %c", &comando);
             // Cria uma variável para o custo e para um int qualquer.
@@ -130,13 +140,13 @@ int main(int argc, char **argv)
                     n = getNum(0, 24*60);
                     custo = passosN(n, bombas, guindastes,
                                     &hora, &minuto);
-                    printf("Custo: R$ %.3lf\n", custo);
+                    printf("\nCusto: R$ %.3lf\n", custo);
                     break;
                 // Comando 'p': avança a simulação um passo.
                 case 'p':
                     custo = passosN(1, bombas, guindastes,
                                     &hora, &minuto);
-                    printf("Custo: R$ %.3lf\n", custo);
+                    printf("\nCusto: R$ %.3lf\n", custo);
                     break;
                 // Comando 'E': desativa o modo de emergência das
                 // bombas.
@@ -171,7 +181,7 @@ int main(int argc, char **argv)
                 case 'N':
                     custo = passosNavio(bombas, guindastes,
                                         &hora, &minuto);
-                    printf("Custo: R$ %.3lf\n", custo);
+                    printf("\nCusto: R$ %.3lf\n", custo);
                     break;
                 // Comando 'n': significa a chegada de um navio.
                 case 'n':
@@ -190,7 +200,7 @@ int main(int argc, char **argv)
                 // Comando 'H/h': mostra ajuda do modo interativo.
                 case 'H':
                 case 'h':
-                    // TODO: Ajuda do modo interativo.
+                    ajudoDoModoInterativo();
                     continue;
                 // Comando 'Q/q': sai do programa.
                 case 'Q':
@@ -353,4 +363,39 @@ bool strNumerica(char *str)
         }
     }
     return true;
+}
+
+/* Mostra as instruções de uso do programa e do modo interativo,
+respectivamente. */
+void ajudaDoPrograma(void)
+{
+    printf("Uso:\n");
+    // Modo de uso: interativo.
+    printf("\tplataforma [opções]\n");
+    printf("\tAbre o programa no modo interativo.\n\n");
+    // Modo de uso: custo.
+    printf("\tplataforma custo\n");
+    printf("\tAbre o programa no modo custo.\n\n");
+    // Opções.
+    printf("\tOpções:\n");
+    printf("\t\t-h --help\n\t\t\tExibe este menu de ajuda\n");
+    printf("\t\t-t [hora] [minuto]\n\t\t\tAltera o horário inicial ");
+    printf("do modo interativo.\n");
+}
+void ajudoDoModoInterativo(void)
+{
+    printf("b : exibe o estado de todo o sistema de bombeamento.\n");
+    printf("B : permite alterar o número de bombas ativas.\n");
+    printf("e : ativa o estado de emergência das bombas.\n");
+    printf("E : desativa o esta do emergência das bombas.\n");
+    printf("g : exibe o estado de todo o sistema de guindastes.\n");
+    printf("G : permite alterar o número máximo de guindastes ativos.\n");
+    printf("h : exibe este menu de ajuda.\n");
+    printf("H : exibe este menu de ajuda.\n");
+    printf("n : tenta atracar um navio.\n");
+    printf("N : AVANÇA a simulação até o navio atracado estiver cheio.\n");
+    printf("p : AVANÇA a simulação um passo.\n");
+    printf("P : AVANÇA a simulação um número arbitrário de passos.\n");
+    printf("q : fecha o programa.\n");
+    printf("Q : fecha o programa.\n");
 }

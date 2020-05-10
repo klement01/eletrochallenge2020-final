@@ -60,4 +60,9 @@ int getNum(int minimo, int maximo);
 /* Retorna true se str for uma string numérica, false se não. */
 bool strNumerica(char *str);
 
+/* Mostra as instruções de uso do programa e do modo interativo,
+respectivamente. */
+void ajudaDoPrograma(void);
+void ajudoDoModoInterativo(void);
+
 #endif // _ENERGIA
