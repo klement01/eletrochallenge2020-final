@@ -148,7 +148,6 @@ bool atualizarGuindastes(Guindastes *guindastes, int horario)
         || (horario > 14 && horario < 18)
         || horario > 24)
     {
-        // TODO: Simular o tempo de retorno do navio.
         desativarTodosOsGuindastes(guindastes);
         return guindastes->estadoDoNavio != 0;
     }

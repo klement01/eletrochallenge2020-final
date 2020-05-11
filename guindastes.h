@@ -7,7 +7,7 @@
 #define NUM_GUINDASTES 10
 /* Potência de cada guindaste, definida pela equipe, em kW por
 guindaste ativo. */
-#define P_GUINDASTE 50 // TODO: Calcular potências dos guindastes.
+#define P_GUINDASTE 389
 
 /* Tempo necessário para um guindaste coletar um novo barril após
 ter carregado outro barril, em segundos. Definido pela equipe */
