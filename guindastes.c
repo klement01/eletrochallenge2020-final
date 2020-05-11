@@ -145,8 +145,8 @@ bool atualizarGuindastes(Guindastes *guindastes, int horario)
     // eles.
     if (guindastes->estadoDoNavio == 0
         || horario < 6
-        || (horario > 14 && horario < 18)
-        || horario > 24)
+        || (horario >= 14 && horario < 18)
+        || horario >= 24)
     {
         desativarTodosOsGuindastes(guindastes);
         return guindastes->estadoDoNavio != 0;

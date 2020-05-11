@@ -57,7 +57,7 @@ int main(int argc, char **argv)
             atualizarNavio(guindastes, INT_MAX);
             // Dá 60*24*60*30 passos (1 mês), registrando o custo
             // durante o processo.
-            double custoMensal = passosN(60 * 24 * 60 * 30, bombas, guindastes,
+            double custoMensal = passosN(60 * 60 * 24 * 30, bombas, guindastes,
                                          &hora, &minuto, &segundo, false);
             // Mostra os custos calculados no terminal.
             printf("Condições ideais (operação contínua):\n");
